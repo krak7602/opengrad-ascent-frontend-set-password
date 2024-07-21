@@ -59,7 +59,7 @@ export default function SetPassword({ token }: { token: string }) {
           router.push("https://admin.ascent-opengrad.in");
         } else if (resp.data.role === "poc") {
           router.push("https://partner.ascent-opengrad.in");
-        } else if (resp.data.role === "volunteer") {
+        } else if (resp.data.role === "vol") {
           router.push("https://volunteer.ascent-opengrad.in");
         }
       } catch (e) {
