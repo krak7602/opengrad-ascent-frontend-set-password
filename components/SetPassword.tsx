@@ -1,4 +1,3 @@
-"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 import { setPasswordSchema } from "@/lib/zod";
 import axios from "axios";
+import { redirect } from "next/navigation";
 
 export default function SetPassword({ token }: { token: string }) {
   const [showPassword1, setShowPassword1] = React.useState(false);
@@ -52,6 +52,13 @@ export default function SetPassword({ token }: { token: string }) {
           },
         );
         if (resp.data.id) setConfirmPassword(true);
+        if (resp.data.role === "admin") {
+          redirect("https://admin.ascent-opengrad.in");
+        } else if (resp.data.role === "poc") {
+          redirect("https://partner.ascent-opengrad.in");
+        } else if (resp.data.role === "volunteer") {
+          redirect("https://volunteer.ascent-opengrad.in");
+        }
       } catch (e) {
         console.log(e);
       }
