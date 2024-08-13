@@ -25,9 +25,11 @@ import { setPasswordSchema } from "@/lib/zod";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function SetPassword({ token }: { token: string }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [showPassword1, setShowPassword1] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = React.useState(false);
@@ -54,7 +56,15 @@ export default function SetPassword({ token }: { token: string }) {
             password: password1,
           },
         );
-        if (resp.data.id) setConfirmPassword(true);
+        if (resp.data.id) {
+          setConfirmPassword(true);
+        } else {
+          toast({
+            title: "Process cannot be completed",
+            description:
+              "This link has expired. Please ask your administrator to resend the request.",
+          });
+        }
         if (resp.data.role === "admin") {
           router.push("https://admin.ascent-opengrad.in");
         } else if (resp.data.role === "poc") {
@@ -63,7 +73,11 @@ export default function SetPassword({ token }: { token: string }) {
           router.push("https://volunteer.ascent-opengrad.in");
         }
       } catch (e) {
-        console.log(e);
+        toast({
+          title: "Process cannot be completed",
+          description:
+            "This link has expired. Please ask your administrator to resend the request.",
+        });
       }
     }
   }
